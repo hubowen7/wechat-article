@@ -1,27 +1,12 @@
 # -*- coding: utf-8 -*-
 import time
-from enum import Enum
+from tags import Tag
 from datetime import datetime, timedelta
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 import requests
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
-
-class Tag(Enum):
-    BEV = "BEV"
-    TRANSFORMER = "Transformer"
-    BEV_TRANSFORMER = "BEV+Transformer"
-    END_TO_END = "端到端"
-    LARGE_MODEL = "大模型"
-    GPT = "GPT"
-    AUTO_DRIVING = "自动驾驶"
-    SMART_DRIVING = "智能驾驶"
-    FSD = "FSD"
-    NOA = "NOA"
-    DRIVING = "行车"
-    PARKING = "泊车"
-    SMART_CAR = "智能汽车"
 
 def fetch_article_details(article_url):
     """ 使用Selenium抓取文章的详细信息，包括标签和发布日期 """
