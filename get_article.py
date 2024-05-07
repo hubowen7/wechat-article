@@ -47,7 +47,7 @@ def filter_articles(articles):
         tags, publish_date = fetch_article_details(link)
         time.sleep(20)  # 每次抓取后休息20秒
         # 确保日期有效且至少包含一个标签
-        if publish_date and publish_date >= one_month_ago and len(tags.intersection(valid_tags)) >= 2:
+        if publish_date and publish_date >= one_month_ago and len(tags.intersection(valid_tags)) >= 1:
             filtered_articles.append((title, link))
             logging.info(f"文章 '{title}' 符合条件并被添加到过滤列表")
         else:
@@ -101,9 +101,11 @@ def main():
     for account in PublicAccount:
         logging.info(f"处理公众号: {account.name}")
         articles = fetch_page(account, 1)  # 抓取1页文章
-        for title, link in articles:
-            logging.info(f"文章标题: {title} 链接: {link}")
-            print(title, link)  # 打印文章标题和链接
+        logging.info(f"获取到的文章数量: {len(articles)}")
+        filtered_articles = filter_articles(articles)  # 调用 filter_articles 来筛选文章
+        for title, link in filtered_articles:
+            logging.info(f"符合条件的文章标题: {title} 链接: {link}")
+            print(title, link)  # 打印符合条件的文章标题和链接
     logging.info("主程序执行结束")
 
 if __name__ == '__main__':
