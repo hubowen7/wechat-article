@@ -14,9 +14,9 @@
    确保您的系统中已安装Python 3.12。可以从 [Python官网](https://www.python.org/downloads/) 下载。
 
 2. 安装依赖库：
-   使用pip安装所需的Python库。
+   依赖项已在 requirements.txt 中列出，运行以下命令安装:
    ```bash
-   pip install selenium requests
+   pip install -r requirements.txt
    ```
 
 3. 安装Chrome WebDriver：
@@ -34,7 +34,7 @@
 3. **运行项目**：
    在终端或命令行窗口中，导航到包含代码的目录，并运行以下命令：
    ```bash
-   python 文件名.py
+   python get_article.py
    ```
 
 4. **查看结果**：
