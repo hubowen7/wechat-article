@@ -26,9 +26,8 @@ class Tag(Enum):
 
 def fetch_article_details(article_url):
     """ 使用Selenium抓取文章的详细信息，包括标签和发布日期 """
-    # Set up Chrome WebDriver with the new Selenium API
     options = Options()
-    options.headless = True  # 如果不需要浏览器界面，使用无头模式
+    options.headless = True  # 使用无头模式
     options.add_argument("--disable-gpu")  # 禁用GPU加速
     options.add_argument("--window-size=1920x1080")  # 指定浏览器分辨率
     service = Service(executable_path='./chromedriver')
