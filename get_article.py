@@ -23,7 +23,6 @@ class Tag(Enum):
     PARKING = "泊车"
     SMART_CAR = "智能汽车"
 
-
 def fetch_article_details(article_url):
     """ 使用Selenium抓取文章的详细信息，包括标签和发布日期 """
     options = Options()
@@ -52,7 +51,7 @@ def filter_articles(articles):
         tags, publish_date = fetch_article_details(link)
         time.sleep(20)  # 每次抓取后休息20秒
         # 确保日期有效且至少包含一个标签
-        if publish_date and publish_date >= one_month_ago and len(tags.intersection(valid_tags)) >= 1:
+        if publish_date and publish_date >= one_month_ago and len(tags.intersection(valid_tags)) >= 2:
             filtered_articles.append((title, link))
     return filtered_articles
 
