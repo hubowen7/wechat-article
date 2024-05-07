@@ -91,11 +91,13 @@ def fetch_page(num=1):
                 print(f"第 {page_number} 页: JSON解码失败。")
         else:
             print(f"第 {page_number} 页: HTTP错误 {response.status_code}")
-
     return titles_links
 
-if __name__ == '__main__':
+def main():
     articles = fetch_page(1)  # 抓取1页文章
     filtered_articles = filter_articles(articles)  # 根据条件筛选文章
     for title, link in filtered_articles:
         print(title, link)  # 打印筛选后的文章标题和链接
+
+if __name__ == '__main__':
+    main()
