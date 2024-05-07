@@ -1,6 +1,9 @@
 from enum import Enum
 
 class Tag(Enum):
+    """
+    微信公众号所带标签的枚举类，用于存储理想的tags。
+    """
     BEV = "BEV"
     TRANSFORMER = "Transformer"
     BEV_TRANSFORMER = "BEV+Transformer"

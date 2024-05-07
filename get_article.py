@@ -8,6 +8,7 @@ import requests
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
 import logging
+from fake_ids import PublicAccount
 
 # 配置日志
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -54,7 +55,7 @@ def filter_articles(articles):
         logging.info("文章筛选完成")
     return filtered_articles
 
-def fetch_page(num=1):
+def fetch_page(account, num):
     """ 从微信公众号API抓取文章页面 """
     logging.info("开始从微信公众号API抓取文章页面")
     headers = {
@@ -63,7 +64,8 @@ def fetch_page(num=1):
     }
     url = 'https://mp.weixin.qq.com/cgi-bin/appmsg'
     # 爬不同公众号只需要更改fakeid
-    fake_id = 'MzIzMjA2NTg3Mw%3D%3D'
+    # fake_id = 'MzIzMjA2NTg3Mw%3D%3D'
+    fake_id = account.value
     titles_links = []
     for page_number in range(num):
         params = {
@@ -96,11 +98,12 @@ def fetch_page(num=1):
 
 def main():
     logging.info("主程序开始执行")
-    articles = fetch_page(1)  # 抓取1页文章
-    filtered_articles = filter_articles(articles)  # 根据条件筛选文章
-    for title, link in filtered_articles:
-        logging.info(f"筛选文章: {title} {link}")
-        print(title, link)  # 打印筛选后的文章标题和链接
+    for account in PublicAccount:
+        logging.info(f"处理公众号: {account.name}")
+        articles = fetch_page(account, 1)  # 抓取1页文章
+        for title, link in articles:
+            logging.info(f"文章标题: {title} 链接: {link}")
+            print(title, link)  # 打印文章标题和链接
     logging.info("主程序执行结束")
 
 if __name__ == '__main__':
