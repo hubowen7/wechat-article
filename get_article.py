@@ -40,14 +40,16 @@ def filter_articles(articles):
     """ 根据特定条件筛选文章 """
     logging.info("开始根据特定条件筛选文章")
     filtered_articles = []
-    one_month_ago = datetime.now() - timedelta(days=5)
+    one_week_ago = datetime.now() - timedelta(days=7)
     valid_tags = {tag.value for tag in Tag}
     for title, link in articles:
         logging.info(f"抓取并处理文章: {title}")
         tags, publish_date = fetch_article_details(link)
         time.sleep(20)  # 每次抓取后休息20秒
-        # 确保日期有效且至少包含一个标签
-        if publish_date and publish_date >= one_month_ago and len(tags.intersection(valid_tags)) >= 1:
+        # 检查标题是否包含任何有效标签
+        title_contains_valid_tag = any(tag in title for tag in valid_tags)
+        # 确保日期有效且至少包含一个标签或标题包含有效标签
+        if publish_date and publish_date >= one_week_ago and (len(tags.intersection(valid_tags)) >= 1 or title_contains_valid_tag):
             filtered_articles.append((title, link))
             logging.info(f"文章 '{title}' 符合条件并被添加到过滤列表")
         else:
@@ -64,7 +66,6 @@ def fetch_page(account, num):
     }
     url = 'https://mp.weixin.qq.com/cgi-bin/appmsg'
     # 爬不同公众号只需要更改fakeid
-    # fake_id = 'MzIzMjA2NTg3Mw%3D%3D'
     fake_id = account.value
     titles_links = []
     for page_number in range(num):
@@ -98,14 +99,17 @@ def fetch_page(account, num):
 
 def main():
     logging.info("主程序开始执行")
+    final_output = []
     for account in PublicAccount:
         logging.info(f"处理公众号: {account.name}")
-        articles = fetch_page(account, 1)  # 抓取1页文章
+        articles = fetch_page(account, 1)
         logging.info(f"获取到的文章数量: {len(articles)}")
         filtered_articles = filter_articles(articles)  # 调用 filter_articles 来筛选文章
         for title, link in filtered_articles:
             logging.info(f"符合条件的文章标题: {title} 链接: {link}")
-            print(title, link)  # 打印符合条件的文章标题和链接
+        final_output.extend(filtered_articles)
+    for title, link in final_output:
+        print(f"标题: {title}, 链接: {link}")
     logging.info("主程序执行结束")
 
 if __name__ == '__main__':
